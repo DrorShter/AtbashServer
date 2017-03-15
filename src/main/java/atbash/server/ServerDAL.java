@@ -1,43 +1,69 @@
 package atbash.server;
 
-public class ServerDAL 
+import java.sql.*;
+
+public class ServerDAL
 {
-	public void userHandler(String user, int id)
-	{
-		//enter info about user to database. update id in "lastLevelofUser" field if id is the biggest until now
+	private Connection connection = null;
+	private ResultSet resultSet;
+	private PreparedStatement preparedStatement = null;
+
+	public ServerDAL() {connection=getConnection();}
+
+	private Connection getConnection() {
+		Connection con=null;
+		String name = "AtbashServer.db";
+		String DB_PATH = "C:\\Users\\User\\Desktop\\atbash\\Atbash\\app\\src\\main\\assets";
+		System.out.println(DB_PATH+name);
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e)
+		{
+			System.out.println("faild connecting");
+		}
+		try {
+			con = DriverManager.getConnection("jdbc:sqlite:" +DB_PATH+ "\\AtbashServer.db");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return con;
 	}
-	public Stage[] getAllStages()
-	{
+
+	public void userHandler(String user, int lastLevelofUser) throws SQLException {
+		//enter info about user to database. update id in "lastLevelofUser" field if id is the biggest until now
+		String query="INSERT INTO Users (UserName, LastLevelOfUser) VALUES (?, ?)";
+		preparedStatement=connection.prepareStatement(query);
+		preparedStatement.setString(1, user);
+		preparedStatement.setInt(2, lastLevelofUser);
+	}
+
+	public Stage[] getAllStages() throws SQLException {
 		Stage[] result = new Stage[getCount()];
 		for (int i=0;i<getCount();i++)
 		{
 			result[i] = getStage(i);
-		}	
+		}
 		return result;
 	}
-	public Stage getStage (int id)
-	{
-		//need to be from the database
-		Stage s = null;
-		switch (id)
-		{
-		case 0:
-			s = new Stage(id, "121", "aba", "אבא");
-			break;
-		case 1:
-			s = new Stage(id, "131", "aga", "אגא");
-			break;
-		case 2:
-			s = new Stage(id, "141", "ada", "אדא");
-			break;
-		}
-		return s;
+	public Stage getStage (int num) throws SQLException {
+		String question, answer, clue, query="SELECT * FROM Level WHERE NumberOfQuestion=?";
+		preparedStatement=connection.prepareStatement(query);
+		preparedStatement.setInt(1, num);
+		resultSet= preparedStatement.executeQuery();
+		question=resultSet.getString("Question");
+		answer=resultSet.getString("Answer");
+		clue=resultSet.getString("Clue");
+		System.out.println(resultSet);
+		return new Stage(num, question, clue, answer);
 	}
-	public int getCount()
-	{
+	public int getCount() throws SQLException {
 		int ret = 0;
-		//ret = something from database
-		ret = 3;
+		String query="SELECT count(*) FROM Level";
+		preparedStatement=connection.prepareStatement(query);
+		resultSet= preparedStatement.executeQuery();
+		resultSet.next();
+		ret=resultSet.getInt(1);
 		return ret;
 	}
 }

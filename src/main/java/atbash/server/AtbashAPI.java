@@ -3,17 +3,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
+
 //Path: http://localhost/<appln-folder-name>/register
 @RestController
 
 public class AtbashAPI
 {
+    /*
     private ServerDAL dal = new ServerDAL();
     @RequestMapping(value = "/getAllStages", method= RequestMethod.GET, produces={"application/json; charset=UTF-8"})
     public Stage[] getAllStages()
     {
-        return dal.getAllStages();
-    }
+        try {
+            return dal.getAllStages();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }*/
     /*
     @GET
     @Path("/getCount")
