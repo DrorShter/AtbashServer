@@ -17,8 +17,7 @@ public class Application {//check that it really works
         try {
             s= ver.getStage(1);
             count=ver.getCount();
-            ver.userHandler("Yossi", 2
-            );
+            ver.userHandler("Noam", 10);
         } catch (SQLException e) {
             e.printStackTrace();
         }

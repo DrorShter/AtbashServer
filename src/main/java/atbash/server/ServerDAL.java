@@ -36,6 +36,7 @@ public class ServerDAL
 		preparedStatement=connection.prepareStatement(query);
 		preparedStatement.setString(1, user);
 		preparedStatement.setInt(2, lastLevelofUser);
+		preparedStatement.execute();
 	}
 
 	public Stage[] getAllStages() throws SQLException {
