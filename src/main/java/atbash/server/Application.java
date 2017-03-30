@@ -15,7 +15,7 @@ public class Application {//check that it really works
         int count=0;
         Stage s=new Stage(0,"","","");
         try {
-            s= ver.getStage(1);
+            s= ver.getStage(5);
             count=ver.getCount();
             ver.userHandler("Noam", 10);
         } catch (SQLException e) {

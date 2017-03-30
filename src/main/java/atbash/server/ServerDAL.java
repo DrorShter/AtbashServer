@@ -13,7 +13,7 @@ public class ServerDAL
 	private Connection getConnection() {
 		Connection con=null;
 		String name = "AtbashServer.db";
-		String DB_PATH = "C:\\Users\\User\\Desktop\\atbash\\Atbash\\app\\src\\main\\assets";
+		String DB_PATH = "C:\\magshimim\\atbashserver\\src\\main\\resources";
 		System.out.println(DB_PATH+name);
 		try {
 			Class.forName("org.sqlite.JDBC");
