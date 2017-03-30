@@ -26,7 +26,6 @@ public class ServerDAL
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return con;
 	}
 
@@ -41,9 +40,8 @@ public class ServerDAL
 
 	public Stage[] getAllStages() throws SQLException {
 		Stage[] result = new Stage[getCount()];
-		for (int i=0;i<getCount();i++)
-		{
-			result[i] = getStage(i);
+		for(int i=0;i<getCount()-1;i++) {
+			result[i] = getStage(i+1);
 		}
 		return result;
 	}
@@ -52,10 +50,11 @@ public class ServerDAL
 		preparedStatement=connection.prepareStatement(query);
 		preparedStatement.setInt(1, num);
 		resultSet= preparedStatement.executeQuery();
+		System.out.println(resultSet.isClosed());
 		question=resultSet.getString("Question");
 		answer=resultSet.getString("Answer");
 		clue=resultSet.getString("Clue");
-		System.out.println(resultSet);
+		System.out.println(num+clue+answer+question);
 		return new Stage(num, question, clue, answer);
 	}
 	public int getCount() throws SQLException {
