@@ -46,7 +46,7 @@ public class ServerDAL
 		return result;
 	}
 	public Stage getStage (int num) throws SQLException {
-		String question, answer, clue, query="SELECT * FROM Level WHERE NumberOfQuestion=?";
+		String question, answer, clue, query="SELECT * FROM Level WHERE NumberOfQuestion=?";//k
 		preparedStatement=connection.prepareStatement(query);
 		preparedStatement.setInt(1, num);
 		resultSet= preparedStatement.executeQuery();
