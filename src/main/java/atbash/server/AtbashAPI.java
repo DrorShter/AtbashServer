@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-//Path: http://localhost/<appln-folder-name>/register
+//Path: http://localhost/<appln-folder-name>/register\
 @RestController
 
 public class AtbashAPI
