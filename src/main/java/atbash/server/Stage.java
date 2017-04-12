@@ -1,5 +1,5 @@
 package atbash.server;
-
+//TODO:LOMBOK
 public class Stage
 {
 	private int number;
