@@ -13,7 +13,7 @@ public class ServerDAL
 	private Connection getConnection() {
 		Connection con=null;
 		String name = "AtbashServer.db";
-		String DB_PATH = "C:\\Users\\User\\Documents\\magshimim\\FinalProject\\atbashserver\\src\\main\\resources";
+		String DB_PATH = "C:\\magshimim\\atbashserver\\src\\main\\resources";
 		System.out.println(DB_PATH+name);
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -23,7 +23,6 @@ public class ServerDAL
 		}
 		try {
 			con = DriverManager.getConnection("jdbc:sqlite:" +DB_PATH+ "\\AtbashServer.db");
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -39,11 +38,9 @@ public class ServerDAL
 		preparedStatement.execute();
 	}
 
-	public Stage[] getAllStages() throws SQLException
-	{
+	public Stage[] getAllStages() throws SQLException {
 		Stage[] result = new Stage[getCount()];
-		for(int i=0;i<getCount()-1;i++)
-		{
+		for(int i=0;i<getCount()-1;i++) {
 			result[i] = getStage(i+1);
 		}
 		return result;
@@ -53,9 +50,11 @@ public class ServerDAL
 		preparedStatement=connection.prepareStatement(query);
 		preparedStatement.setInt(1, num);
 		resultSet= preparedStatement.executeQuery();
+		System.out.println(resultSet.isClosed());
 		question=resultSet.getString("Question");
 		answer=resultSet.getString("Answer");
 		clue=resultSet.getString("Clue");
+		System.out.println(num+clue+answer+question);
 		return new Stage(num, question, clue, answer);
 	}
 	public int getCount() throws SQLException {
@@ -66,5 +65,19 @@ public class ServerDAL
 		resultSet.next();
 		ret=resultSet.getInt(1);
 		return ret;
+	}
+	public FacebookUser getUser (int id) throws SQLException {
+		String query="SELECT * FROM Users WHERE ID=?";
+		preparedStatement=connection.prepareStatement(query);
+		preparedStatement.setInt(1, id);
+		resultSet= preparedStatement.executeQuery();
+		return new FacebookUser(resultSet.getString("ID"), resultSet.getString("UserName"), resultSet.getInt("LastLevelOfUser"));
+	}
+	public void updateLastLevel(int id, int last) throws SQLException {
+		String query="UPDATE Users SET LastLevelOfUser =? WHERE ID=?";
+		preparedStatement=connection.prepareStatement(query);
+		preparedStatement.setInt(1, last);
+		preparedStatement.setInt(2, id);
+		resultSet= preparedStatement.executeQuery();
 	}
 }
