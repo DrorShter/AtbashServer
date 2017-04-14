@@ -15,7 +15,7 @@ public class ServerDAL
 		String name = "AtbashServer.db";
 		String DB_PATH_DROR = "C:\\magshimim\\atbashserver\\src\\main\\resources";
         String DB_PATH_NOAM = "C:\\Users\\User\\Documents\\magshimim\\FinalProject\\atbashserver\\src\\main\\resources";
-        String DB_PATH = DB_PATH_NOAM; //CHANGE IF OTHER COMPUTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        String DB_PATH = DB_PATH_NOAM; //CHANGE IF OTHER COMPUTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		System.out.println(DB_PATH+name);
 		try {
 			Class.forName("org.sqlite.JDBC");
