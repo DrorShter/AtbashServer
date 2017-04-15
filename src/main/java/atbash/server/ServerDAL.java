@@ -31,7 +31,7 @@ public class ServerDAL
 		return con;
 	}
 
-	public void userHandler(String user, int lastLevelofUser) throws SQLException {
+	public void userHandler(String id, String user, int lastLevelofUser) throws SQLException {
 		//enter info about user to database. update id in "lastLevelofUser" field if id is the biggest until now
 		String query="INSERT INTO Users (UserName, LastLevelOfUser) VALUES (?, ?)";
 		preparedStatement=connection.prepareStatement(query);
@@ -68,18 +68,29 @@ public class ServerDAL
 		ret=resultSet.getInt(1);
 		return ret;
 	}//
-	public FacebookUser getUser (int id) throws SQLException {
+	public FacebookUser getUser (String id) throws SQLException {
 		String query="SELECT * FROM Users WHERE ID=?";
 		preparedStatement=connection.prepareStatement(query);
-		preparedStatement.setInt(1, id);
+		preparedStatement.setString(1, id);
 		resultSet= preparedStatement.executeQuery();
 		return new FacebookUser(resultSet.getString("ID"), resultSet.getString("UserName"), resultSet.getInt("LastLevelOfUser"));
 	}
-	public void updateLastLevel(int id, int last) throws SQLException {
+	public void updateLastLevel(String id, int last) throws SQLException {
 		String query="UPDATE Users SET LastLevelOfUser =? WHERE ID=?";
 		preparedStatement=connection.prepareStatement(query);
 		preparedStatement.setInt(1, last);
-		preparedStatement.setInt(2, id);
+		preparedStatement.setString(2, id);
 		resultSet= preparedStatement.executeQuery();
+	}
+	public boolean isUserExist(String id) throws SQLException {
+		String query="SELECT * FROM Users WHERE ID=?";
+		preparedStatement=connection.prepareStatement(query);
+		preparedStatement.setString(1, id);
+		resultSet= preparedStatement.executeQuery();
+		if(resultSet==null)
+		{
+			return false;
+		}
+		return true;
 	}
 }
