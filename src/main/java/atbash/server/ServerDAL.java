@@ -12,10 +12,10 @@ public class ServerDAL
 
 	private Connection getConnection() {
 		Connection con=null;
-		String name = "AtbashServer.db";
-		String DB_PATH_DROR = "C:\\magshimim\\atbashserver\\src\\main\\resources";
+		String name = "atbash/server/AtbashServer.db";
+		String DB_PATH_DROR = "C:\\magshimim\\atbashserver\\atbash\\src\\main\\java\\atbash\\server";
         String DB_PATH_NOAM = "C:\\Users\\User\\Documents\\magshimim\\FinalProject\\atbashserver\\src\\main\\resources";
-        String DB_PATH = DB_PATH_NOAM; //CHANGE IF OTHER COMPUTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        String DB_PATH = DB_PATH_DROR; //CHANGE IF OTHER COMPUTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		System.out.println(DB_PATH+name);
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -67,7 +67,7 @@ public class ServerDAL
 		resultSet.next();
 		ret=resultSet.getInt(1);
 		return ret;
-	}
+	}//
 	public FacebookUser getUser (int id) throws SQLException {
 		String query="SELECT * FROM Users WHERE ID=?";
 		preparedStatement=connection.prepareStatement(query);
