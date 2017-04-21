@@ -30,6 +30,7 @@ public class AtbashAPI
     @RequestMapping(value = "/updateFacebookUser/{facebookID}/{name}/{currentStageNumber}", method= GET, produces={"application/json; charset=UTF-8"})
     public Boolean updateFacebookUser(@PathVariable("facebookID") String facebookID, @PathVariable("name") String name, @PathVariable("currentStageNumber") String currentStageNumber) throws SQLException {
         //TODO: Does not work with hebrew
+        name = englishToHebrew(name);
         FacebookUser user = new FacebookUser(facebookID,name,Integer.parseInt(currentStageNumber));
         System.out.println(user.getFacebookID() + user.getName() + user.getCurrentStageNumber());
         if(!dal.isUserExist(facebookID))
@@ -76,5 +77,104 @@ public class AtbashAPI
         {
             System.out.println(ids[i] + "\n");
         }
+    }
+    public String englishToHebrew(String english)
+    {
+        String name = "";
+        System.out.println("in english to hebrew");
+        if (english.charAt(0) == '@')
+        {
+            for (int i=1;i<english.length();i++)
+            {
+                switch (english.charAt(i))
+                {
+                    case 'a':
+                        name += 'א';
+                        break;
+                    case 'b':
+                        name += "ב";
+                        break;
+                    case 'c':
+                        name += 'ג';
+                        break;
+                    case 'd':
+                        name += 'ד';
+                        break;
+                    case 'e':
+                        name += 'ה';
+                        break;
+                    case 'f':
+                        name += 'ו';
+                        break;
+                    case 'g':
+                        name += 'ז';
+                        break;
+                    case 'h':
+                        name += 'ח';
+                        break;
+                    case 'i':
+                        name += 'ט';
+                        break;
+                    case 'j':
+                        name += 'י';
+                        break;
+                    case 'k':
+                        name += 'כ';
+                        break;
+                    case 'l':
+                        name += 'ל';
+                        break;
+                    case 'm':
+                        name += 'מ';
+                        break;
+                    case 'n':
+                        name += 'נ';
+                        break;
+                    case 'o':
+                        name += 'ס';
+                        break;
+                    case 'p':
+                        name += 'ע';
+                        break;
+                    case 'q':
+                        name += 'פ';
+                        break;
+                    case 'r':
+                        name += 'צ';
+                        break;
+                    case 's':
+                        name += 'ק';
+                        break;
+                    case 't':
+                        name += 'ר';
+                        break;
+                    case 'u':
+                        name += 'ש';
+                        break;
+                    case 'v':
+                        name += 'ת';
+                        break;
+                    case 'w':
+                        name += 'ך';
+                        break;
+                    case 'x':
+                        name += 'ם';
+                        break;
+                    case 'y':
+                        name += 'ן';
+                        break;
+                    case 'z':
+                        name += 'ף';
+                        break;
+                    case '#':
+                        name += 'ץ';
+                        break;
+                    default:
+                        name += english.charAt(i);
+                }
+            }
+        }
+        System.out.println("name = " + name);
+        return name;
     }
 }
