@@ -49,13 +49,10 @@ public class AtbashAPI
         return dal.getFacebookFreinds(ids);
     }
     @RequestMapping(value = "/getFacebookGlobal", method= GET, produces={"application/json; charset=UTF-8"})
-    public FacebookUser[] getFacebookGlobal()
-    {
+    public FacebookUser[] getFacebookGlobal() throws SQLException {
         //TODO: return the 10 most successful FacebookUsers. If less then 10, null;
         System.out.println("Inside AtbashServerAPI: getFacebookGlobal");
-        FacebookUser[] facebookUsers = new FacebookUser[10];//debug
-        facebookUsers[0] = new FacebookUser("1", "global1", 2); //debug
-        return facebookUsers;
+        return dal.getFacebookGlobal();
     }
     private void printer(String[] ids)
     {

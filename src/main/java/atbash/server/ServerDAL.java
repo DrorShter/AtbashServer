@@ -18,7 +18,7 @@ public class ServerDAL
 		String name = "atbash/server/AtbashServer.db";
 		String DB_PATH_DROR = "C:\\magshimim\\atbashserver\\atbash\\src\\main\\java\\atbash\\server";
         String DB_PATH_NOAM = "C:\\Users\\User\\Documents\\magshimim\\FinalProject\\atbashserver\\src\\main\\java\\atbash\\server";
-        String DB_PATH = DB_PATH_DROR; //CHANGE IF OTHER COMPUTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        String DB_PATH = DB_PATH_NOAM; //CHANGE IF OTHER COMPUTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		System.out.println(DB_PATH+name);
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -36,10 +36,11 @@ public class ServerDAL
 
 	public void userHandler(String id, String user, int lastLevelofUser) throws SQLException {
 		//enter info about user to database. update id in "lastLevelofUser" field if id is the biggest until now
-		String query="INSERT INTO Users (UserName, LastLevelOfUser) VALUES (?, ?)";
+		String query="INSERT INTO Users (ID, UserName, LastLevelOfUser) VALUES (?, ?, ?)";
 		preparedStatement=connection.prepareStatement(query);
-		preparedStatement.setString(1, user);
-		preparedStatement.setInt(2, lastLevelofUser);
+		preparedStatement.setString(1, id);
+		preparedStatement.setString(2, user);
+		preparedStatement.setInt(3, lastLevelofUser);
 		preparedStatement.execute();
 	}
 
@@ -73,31 +74,31 @@ public class ServerDAL
 	}//
 	public FacebookUser getUser (String id) throws SQLException {
 		String query="SELECT * FROM Users WHERE ID=?";
-		preparedStatement=connection.prepareStatement(query);
-		preparedStatement.setString(1, id);
-		resultSet= preparedStatement.executeQuery();
-		String us =resultSet.getString("userName");
-		int tmp=resultSet.getInt("LastLevelOfUser");
-		FacebookUser F=new FacebookUser(id, us, tmp);
-		return F;
+		PreparedStatement ps = connection.prepareStatement(query);
+		ps.setString(1, id);
+		ResultSet rs = ps.executeQuery();
+		if(!rs.next())
+        {
+            return null;
+        }
+        String us =rs.getString("userName");
+        int tmp=rs.getInt("LastLevelOfUser");
+        FacebookUser F=new FacebookUser(id, us, tmp);
+        return F;
 	}
 	public void updateLastLevel(String id, int last) throws SQLException {
 		String query="UPDATE Users SET LastLevelOfUser =? WHERE ID=?";
-		preparedStatement=connection.prepareStatement(query);
-		preparedStatement.setInt(1, last);
-		preparedStatement.setString(2, id);
-		resultSet= preparedStatement.executeQuery();
+		PreparedStatement ps = preparedStatement = connection.prepareStatement(query);
+        ps.setInt(1, last);
+		ps.setString(2, id);
+		ps.execute();
 	}
 	public boolean isUserExist(String id) throws SQLException {
 		String query="SELECT * FROM Users WHERE ID=?";
-		preparedStatement=connection.prepareStatement(query);
-		preparedStatement.setString(1, id);
-		resultSet= preparedStatement.executeQuery();
-		if(resultSet==null)
-		{
-			return false;
-		}
-		return true;
+		PreparedStatement ps = connection.prepareStatement(query);
+		ps.setString(1, id);
+		ResultSet rs = ps.executeQuery();
+		return rs.next();
 	}
 	public FacebookUser[] getFacebookFreinds(String ids[]) throws SQLException {
 		List<FacebookUser> list= new ArrayList<FacebookUser>();
@@ -107,13 +108,24 @@ public class ServerDAL
 				list.add(getUser(ids[i]));
 			}
 		}
-		list.sort(Comparator.comparing(FacebookUser::getCurrentStageNumber));
-		FacebookUser[] facebookUsers = new FacebookUser[10];//debug
-		for(int i=0;i<10;i++)
-		{
-			facebookUsers[i]=list.get(i);
-		}
-		return facebookUsers;
+		if (list != null)
+        {
+            list.sort(Comparator.comparing(FacebookUser::getCurrentStageNumber));
+        }
+		return list.stream().toArray(FacebookUser[]::new);
 	}
+	public FacebookUser[] getFacebookGlobal() throws SQLException
+    {
+        String query = "SELECT * FROM Users ORDER BY LastLevelOfUser DESC LIMIT 10";
+        PreparedStatement ps = connection.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        List<FacebookUser> l = new ArrayList<>();
+        while(rs.next())
+        {
+            FacebookUser f = new FacebookUser(rs.getString("ID"), rs.getString("UserName"), rs.getInt("LastLevelOfUser"));
+            l.add(f);
+        }
+        return l.stream().toArray(FacebookUser[]::new);
+    }
 
 }
