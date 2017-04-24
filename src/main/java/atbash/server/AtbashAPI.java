@@ -157,6 +157,10 @@ public class AtbashAPI
                 }
             }
         }
+        else
+        {
+            name=english;
+        }
         System.out.println("name = " + name);
         return name;
     }

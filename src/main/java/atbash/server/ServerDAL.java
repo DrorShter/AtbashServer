@@ -18,7 +18,7 @@ public class ServerDAL
 		String name = "atbash/server/AtbashServer.db";
 		String DB_PATH_DROR = "C:\\magshimim\\atbashserver\\atbash\\src\\main\\java\\atbash\\server";
         String DB_PATH_NOAM = "C:\\Users\\User\\Documents\\magshimim\\FinalProject\\atbashserver\\src\\main\\java\\atbash\\server";
-        String DB_PATH = DB_PATH_NOAM; //CHANGE IF OTHER COMPUTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        String DB_PATH = DB_PATH_DROR; //CHANGE IF OTHER COMPUTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		System.out.println(DB_PATH+name);
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -37,6 +37,7 @@ public class ServerDAL
 	public void userHandler(String id, String user, int lastLevelofUser) throws SQLException {
 		//enter info about user to database. update id in "lastLevelofUser" field if id is the biggest until now
 		String query="INSERT INTO Users (ID, UserName, LastLevelOfUser) VALUES (?, ?, ?)";
+		System.out.println(query);
 		preparedStatement=connection.prepareStatement(query);
 		preparedStatement.setString(1, id);
 		preparedStatement.setString(2, user);
