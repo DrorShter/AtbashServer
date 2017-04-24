@@ -46,20 +46,7 @@ public class AtbashAPI
     }
     @RequestMapping(value = "/getFacebookFriends/{ids}", method= GET, produces={"application/json; charset=UTF-8"})
     public FacebookUser[] getFacebookFriends(@PathVariable("ids") String[] ids) throws SQLException {
-        List<FacebookUser> list= new ArrayList<FacebookUser>();
-        System.out.println("Inside AtbashServerAPI: getFacebookFriends");
-        printer(ids); //debug
-        for(int i=0; i<ids.length; i++)
-        {
-            list.add(dal.getUser(ids[i]));
-        }
-        list.sort(Comparator.comparing(FacebookUser::getCurrentStageNumber));
-        FacebookUser[] facebookUsers = new FacebookUser[10];//debug
-        for(int i=0;i<10;i++)
-        {
-            facebookUsers[i]=list.get(i);
-        }
-        return facebookUsers;
+        return dal.getFacebookFreinds(ids);
     }
     @RequestMapping(value = "/getFacebookGlobal", method= GET, produces={"application/json; charset=UTF-8"})
     public FacebookUser[] getFacebookGlobal()

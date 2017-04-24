@@ -1,6 +1,9 @@
 package atbash.server;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class ServerDAL
 {
@@ -15,7 +18,7 @@ public class ServerDAL
 		String name = "atbash/server/AtbashServer.db";
 		String DB_PATH_DROR = "C:\\magshimim\\atbashserver\\atbash\\src\\main\\java\\atbash\\server";
         String DB_PATH_NOAM = "C:\\Users\\User\\Documents\\magshimim\\FinalProject\\atbashserver\\src\\main\\java\\atbash\\server";
-        String DB_PATH = DB_PATH_NOAM; //CHANGE IF OTHER COMPUTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        String DB_PATH = DB_PATH_DROR; //CHANGE IF OTHER COMPUTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		System.out.println(DB_PATH+name);
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -73,7 +76,10 @@ public class ServerDAL
 		preparedStatement=connection.prepareStatement(query);
 		preparedStatement.setString(1, id);
 		resultSet= preparedStatement.executeQuery();
-		return new FacebookUser(resultSet.getString("ID"), resultSet.getString("UserName"), resultSet.getInt("LastLevelOfUser"));
+		String us =resultSet.getString("userName");
+		int tmp=resultSet.getInt("LastLevelOfUser");
+		FacebookUser F=new FacebookUser(id, us, tmp);
+		return F;
 	}
 	public void updateLastLevel(String id, int last) throws SQLException {
 		String query="UPDATE Users SET LastLevelOfUser =? WHERE ID=?";
@@ -92,6 +98,22 @@ public class ServerDAL
 			return false;
 		}
 		return true;
+	}
+	public FacebookUser[] getFacebookFreinds(String ids[]) throws SQLException {
+		List<FacebookUser> list= new ArrayList<FacebookUser>();
+		for(int i=0; i<ids.length; i++)
+		{
+			if(ids[i]!=null) {
+				list.add(getUser(ids[i]));
+			}
+		}
+		list.sort(Comparator.comparing(FacebookUser::getCurrentStageNumber));
+		FacebookUser[] facebookUsers = new FacebookUser[10];//debug
+		for(int i=0;i<10;i++)
+		{
+			facebookUsers[i]=list.get(i);
+		}
+		return facebookUsers;
 	}
 
 }

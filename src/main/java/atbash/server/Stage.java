@@ -12,4 +12,6 @@ public class Stage
 	private String question;
     private String clue;
     private String answer;
+
+
 }
