@@ -29,7 +29,6 @@ public class AtbashAPI
     }
     @RequestMapping(value = "/updateFacebookUser/{facebookID}/{name}/{currentStageNumber}", method= GET, produces={"application/json; charset=UTF-8"})
     public Boolean updateFacebookUser(@PathVariable("facebookID") String facebookID, @PathVariable("name") String name, @PathVariable("currentStageNumber") String currentStageNumber) throws SQLException {
-        //TODO: Does not work with hebrew
         name = englishToHebrew(name);
         FacebookUser user = new FacebookUser(facebookID,name,Integer.parseInt(currentStageNumber));
         System.out.println(user.getFacebookID() + user.getName() + user.getCurrentStageNumber());
