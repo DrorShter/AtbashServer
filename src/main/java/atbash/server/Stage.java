@@ -8,10 +8,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Stage
 {
-	private int number;
-	private String question;
-    private String clue;
-    private String answer;
+	private int number; //number (id)
+	private String question; //question
+    private String clue; //clue to question
+    private String answer; //answer to question
 
 
 }
